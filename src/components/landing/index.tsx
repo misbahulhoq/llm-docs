@@ -1,33 +1,17 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import {
-  ChevronDown,
-  Copy,
-  Check,
-  MessageCircle,
-  LayoutGrid,
-  Component,
-  Database,
-  RefreshCw,
-  TestTube,
-  Hammer,
-  Layers,
-} from "lucide-react";
+import { Copy, Check, MessageCircle } from "lucide-react";
 
 // shadcn/ui components
-import { Button } from "@/components/ui/button";
-
-import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+
 import Footer from "@/components/layout/footer";
 import HeroSection from "./hero";
+import StatsBar from "./stats-bar";
+import { CATEGORIES, LLMS } from "@/lib/constants";
 
 // ============================================================================
 // Data & Types
@@ -53,14 +37,7 @@ interface RecentItem {
   ltr: string;
 }
 
-const LLMS = [
-  { id: "claude", name: "Claude", dot: "#185FA5", icon: "✨" },
-  { id: "chatgpt", name: "ChatGPT", dot: "#639922", icon: "🤖" },
-  { id: "gemini", name: "Gemini", dot: "#D85A30", icon: "🌟" },
-  { id: "perplexity", name: "Perplexity", dot: "#5DCAA5", icon: "🔍" },
-] as const;
-
-type LLMId = (typeof LLMS)[number]["id"];
+export type LLMId = (typeof LLMS)[number]["id"];
 
 const LIBRARIES: Library[] = [
   {
@@ -228,17 +205,6 @@ const RECENT_ITEMS: RecentItem[] = [
   },
 ];
 
-const CATEGORIES = [
-  { id: "all", name: "All", icon: LayoutGrid },
-  { id: "ui", name: "UI Frameworks", icon: Component },
-  { id: "state", name: "State Management", icon: Database },
-  { id: "fetching", name: "Data Fetching", icon: RefreshCw },
-  { id: "testing", name: "Testing", icon: TestTube },
-  { id: "build", name: "Build Tools", icon: Hammer },
-  { id: "utils", name: "Utilities", icon: Hammer },
-  { id: "meta", name: "Meta Frameworks", icon: Layers },
-] as const;
-
 // ============================================================================
 // Helper Functions
 // ============================================================================
@@ -312,80 +278,16 @@ export default function LandingPage() {
     window.open(url, "_blank");
   };
 
-  // Change LLM model
-  const changeLLM = (llmId: LLMId) => {
-    setSelectedLLM(llmId);
-    setIsDropdownOpen(false);
-  };
-
   const currentLLM = LLMS.find((l) => l.id === selectedLLM)!;
 
-  // Stats data
-  const stats = [
-    { label: "Libraries", value: "142" },
-    { label: "Categories", value: "38" },
-    { label: "Tokens served", value: "4.2M" },
-    { label: "Daily", value: "Updates" },
-  ];
-
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100">
+    <div className="min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Hero Section */}
         <HeroSection />
 
         {/* Stats Bar with LLM Selector */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-gray-100 dark:border-gray-800 pb-6 mb-6">
-          <div className="flex items-center gap-6">
-            {stats.map((stat) => (
-              <div key={stat.label} className="text-center">
-                <div className="text-xl font-medium text-gray-900 dark:text-white">
-                  {stat.value}
-                </div>
-                <div className="text-[11px] text-gray-500 dark:text-gray-400">
-                  {stat.label}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* LLM Selector Dropdown */}
-          <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="outline"
-                className="gap-2 border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900"
-              >
-                <span
-                  className="w-2 h-2 rounded-full"
-                  style={{ background: currentLLM.dot }}
-                />
-                <span>Ask with {currentLLM.name}</span>
-                <ChevronDown className="h-3.5 w-3.5 text-gray-500" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-44">
-              {LLMS.map((llm) => (
-                <DropdownMenuItem
-                  key={llm.id}
-                  onClick={() => changeLLM(llm.id)}
-                  className="flex items-center justify-between gap-2 cursor-pointer"
-                >
-                  <div className="flex items-center gap-2">
-                    <span
-                      className="w-2 h-2 rounded-full"
-                      style={{ background: llm.dot }}
-                    />
-                    <span>{llm.name}</span>
-                  </div>
-                  {selectedLLM === llm.id && (
-                    <Check className="h-3.5 w-3.5 text-blue-600" />
-                  )}
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
+        <StatsBar />
 
         {/* Categories Filter */}
         <div className="mb-5">
@@ -393,6 +295,7 @@ export default function LandingPage() {
             {CATEGORIES.map((cat) => {
               const Icon = cat.icon;
               const isActive = activeCategory === cat.id;
+
               return (
                 <Button
                   key={cat.id}
@@ -400,8 +303,8 @@ export default function LandingPage() {
                   size="sm"
                   className={`gap-1.5 rounded-full text-xs h-8 ${
                     isActive
-                      ? "bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800"
-                      : "border-gray-200 dark:border-gray-800 text-gray-600 dark:text-gray-400"
+                      ? "bg-blue-50 dark:bg-blue-950 text-blue-700 border-blue-200"
+                      : "border-foreground/30 text-gray-600"
                   }`}
                   onClick={() => setActiveCategory(cat.id)}
                 >
@@ -417,21 +320,17 @@ export default function LandingPage() {
         <div className="mb-6">
           <div className="flex items-center justify-between mb-3">
             <div>
-              <h2 className="text-sm font-medium text-gray-900 dark:text-white">
-                Popular libraries
-              </h2>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-                Most asked this week
-              </p>
+              <h2 className="text-sm font-medium  ">Popular libraries</h2>
+              <p className="text-xs  ">Most asked this week</p>
             </div>
           </div>
 
           {filteredLibraries.length === 0 ? (
-            <div className="text-center py-12 border border-dashed border-gray-200 dark:border-gray-800 rounded-lg">
-              <p className="text-sm text-gray-500 dark:text-gray-400">
+            <div className="text-center py-12 border border-dashed border-foreground/30  rounded-lg">
+              <p className="text-sm  ">
                 No libraries found.{" "}
                 <button
-                  className="text-blue-600 dark:text-blue-400 hover:underline"
+                  className="text-blue-600  hover:underline"
                   onClick={() => alert("Submit a library feature coming soon")}
                 >
                   Submit it ↗
@@ -445,7 +344,7 @@ export default function LandingPage() {
                 return (
                   <Card
                     key={lib.name}
-                    className="group border border-gray-100 dark:border-gray-800 hover:border-gray-200 dark:hover:border-gray-700 transition-all"
+                    className="group border border-gray-100  hover:border-foreground/30  transition-all"
                   >
                     <CardContent className="p-4 space-y-3">
                       <div className="flex items-center justify-between">
@@ -459,32 +358,28 @@ export default function LandingPage() {
                           variant="secondary"
                           className={`text-[10px] px-2 py-0 ${
                             lib.badge === "popular"
-                              ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300"
+                              ? "bg-emerald-50 text-emerald-700"
                               : lib.badge === "new"
-                                ? "bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300"
-                                : "bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400"
+                                ? "bg-primary/10 text-primary"
+                                : "bg-card text-card-foreground "
                           }`}
                         >
                           {lib.badge}
                         </Badge>
                       </div>
                       <div>
-                        <h3 className="text-sm font-medium text-gray-900 dark:text-white">
-                          {lib.name}
-                        </h3>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                          {lib.desc}
-                        </p>
+                        <h3 className="text-sm font-medium  ">{lib.name}</h3>
+                        <p className="text-xs   mt-1">{lib.desc}</p>
                       </div>
                       <div className="flex items-center justify-between pt-1">
-                        <span className="text-[11px] font-mono text-gray-400 dark:text-gray-500">
+                        <span className="text-[11px] font-mono text-muted-foreground">
                           {lib.version}
                         </span>
                       </div>
                       <div className="flex items-center gap-2 pt-1">
                         <Button
                           size="sm"
-                          className="flex-1 h-8 gap-1.5 bg-blue-700 hover:bg-blue-800 text-white text-xs"
+                          className="flex-1 h-8 gap-1.5"
                           onClick={() => handleAsk(lib.name)}
                         >
                           <MessageCircle className="h-3.5 w-3.5" />
@@ -493,11 +388,11 @@ export default function LandingPage() {
                         <Button
                           size="sm"
                           variant="outline"
-                          className="h-8 px-3 gap-1.5 border-gray-200 dark:border-gray-800 text-gray-600 dark:text-gray-400"
+                          className="h-8 px-3 gap-1.5"
                           onClick={() => handleCopy(lib.name)}
                         >
                           {isCopied ? (
-                            <Check className="h-3.5 w-3.5 text-emerald-600" />
+                            <Check className="h-3.5 w-3.5 text-accent" />
                           ) : (
                             <Copy className="h-3.5 w-3.5" />
                           )}
@@ -516,9 +411,7 @@ export default function LandingPage() {
 
         {/* How it works */}
         <div className="mb-8">
-          <h2 className="text-sm font-medium text-gray-900 dark:text-white mb-3">
-            How it works
-          </h2>
+          <h2 className="text-sm font-medium   mb-3">How it works</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             {[
               {
@@ -539,24 +432,20 @@ export default function LandingPage() {
             ].map((item) => (
               <Card
                 key={item.step}
-                className="border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50"
+                className="border border-gray-100  bg-gray-50 dark:bg-gray-900/50"
               >
                 <CardContent className="p-4">
-                  <div className="w-6 h-6 rounded-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex items-center justify-center text-[11px] font-medium text-gray-600 dark:text-gray-400 mb-2">
+                  <div className="w-6 h-6 rounded-full bg-white dark:bg-gray-800 border border-foreground/30 dark:border-gray-700 flex items-center justify-center text-[11px] font-medium text-gray-600  mb-2">
                     {item.step}
                   </div>
-                  <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-1">
-                    {item.title}
-                  </h3>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
-                    {item.desc}
-                  </p>
+                  <h3 className="text-sm font-medium   mb-1">{item.title}</h3>
+                  <p className="text-xs   leading-relaxed">{item.desc}</p>
                   {item.step === "2" && (
                     <div className="flex gap-1.5 mt-3">
                       {LLMS.map((llm) => (
                         <span
                           key={llm.id}
-                          className="text-[10px] px-2 py-0.5 rounded-full border border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400"
+                          className="text-[10px] px-2 py-0.5 rounded-full border border-foreground/30 dark:border-gray-700  "
                         >
                           {llm.name}
                         </span>
@@ -572,14 +461,10 @@ export default function LandingPage() {
         {/* Recent Updates */}
         <div className="mb-8">
           <div className="mb-3">
-            <h2 className="text-sm font-medium text-gray-900 dark:text-white">
-              Recent updates
-            </h2>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
-              Docs updated in the last 7 days
-            </p>
+            <h2 className="text-sm font-medium  ">Recent updates</h2>
+            <p className="text-xs  ">Docs updated in the last 7 days</p>
           </div>
-          <div className="space-y-0 divide-y divide-gray-100 dark:divide-gray-800 border border-gray-100 dark:border-gray-800 rounded-lg">
+          <div className="space-y-0 divide-y divide-gray-100 dark:divide-gray-800 border border-gray-100  rounded-lg">
             {RECENT_ITEMS.map((item) => {
               const isCopied = copiedLibName === item.name;
               return (
@@ -595,16 +480,14 @@ export default function LandingPage() {
                       {item.ltr}
                     </div>
                     <div>
-                      <span className="text-sm text-gray-900 dark:text-white">
-                        {item.name}
-                      </span>
-                      <span className="text-[11px] font-mono text-gray-400 dark:text-gray-500 ml-1.5">
+                      <span className="text-sm  ">{item.name}</span>
+                      <span className="text-[11px] font-mono text-gray-400 dark: ml-1.5">
                         {item.tag}
                       </span>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-[11px] text-gray-400 dark:text-gray-500">
+                    <span className="text-[11px] text-gray-400 dark:">
                       {item.time}
                     </span>
                     <Button
@@ -618,7 +501,7 @@ export default function LandingPage() {
                     <Button
                       size="sm"
                       variant="outline"
-                      className="h-7 px-2 gap-1 text-[11px] border-gray-200 dark:border-gray-800"
+                      className="h-7 px-2 gap-1 text-[11px] border-foreground/30 "
                       onClick={() => handleCopy(item.name)}
                     >
                       {isCopied ? (
