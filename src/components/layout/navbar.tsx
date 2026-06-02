@@ -1,18 +1,32 @@
 "use client";
 
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { Github, BookMarked, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 import { Button } from "@/components/ui/button";
-import { ThemeToggle } from "@/components/shared/theme-changer";
 
 interface NavLink {
   label: string;
   href: string;
 }
+
+// Dynamically import the toggle and disable Server-Side Rendering
+const ThemeToggle = dynamic(
+  () =>
+    import("@/components/shared/theme-changer").then((mod) => mod.ThemeToggle),
+  {
+    ssr: false,
+    loading: () => (
+      <Button variant="outline" size="icon" disabled className="w-9 h-9">
+        <span className="h-[1.2rem] w-[1.2rem] block" />
+      </Button>
+    ),
+  },
+);
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 

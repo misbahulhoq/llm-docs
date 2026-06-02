@@ -54,6 +54,7 @@ const RecentUpdates = () => {
         <h2 className="text-sm font-medium  ">Recent updates</h2>
         <p className="text-xs  ">Docs updated in the last 7 days</p>
       </div>
+
       <div className="space-y-0 divide-y divide-gray-100 dark:divide-gray-800 border border-gray-100  rounded-lg">
         {RECENT_ITEMS.map((item) => {
           return (
