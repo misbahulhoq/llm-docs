@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 
-import Footer from "@/components/layout/footer";
 import HeroSection from "./hero";
 import StatsBar from "./stats-bar";
 import { Library, LLMId } from "@/lib/constants";
@@ -188,9 +187,6 @@ export default function LandingPage() {
 
         {/* Recent Updates */}
         <RecentUpdates />
-
-        {/* Footer */}
-        <Footer />
       </div>
     </div>
   );
