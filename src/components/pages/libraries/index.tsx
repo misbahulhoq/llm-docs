@@ -6,7 +6,7 @@ const LibraryPage = async ({ libraryName }: { libraryName: string }) => {
   const activeLibraryMdContent = await getLibraryContent(
     libraryName,
     "16.2.6",
-    0.05,
+    0.2,
   );
 
   return <LibraryPageClient markdownContent={activeLibraryMdContent} />;

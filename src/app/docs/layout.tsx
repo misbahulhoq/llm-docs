@@ -3,10 +3,10 @@ import Sidebar from "@/components/layout/sidebar";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <main className="flex max-h-[calc(100vh-60px)] min-h-0 flex-col gap-5 overflow-hidden md:flex-row">
+    <main className="flex flex-col gap-5 md:flex-row">
       <Sidebar />
 
-      <div className="flex-1 overflow-y-auto">{children}</div>
+      <div className="flex-1">{children}</div>
     </main>
   );
 };

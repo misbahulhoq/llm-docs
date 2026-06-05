@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
+import { ChevronRight } from "lucide-react";
 
 import { libraries } from "@/lib/libraries";
-import { ChevronRight } from "lucide-react";
 
 const Sidebar = () => {
   const pathName = usePathname();
@@ -13,7 +13,7 @@ const Sidebar = () => {
 
   return (
     <aside
-      className={`[&::-webkit-scrollbar-thumb]:bg-foreground/25 bg-sidebar/40 text-sidebar-foreground overflow-y-auto lg:w-56 lg:pb-5 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full dark:[&::-webkit-scrollbar-thumb]:bg-slate-700 [&::-webkit-scrollbar-track]:bg-transparent`}
+      className={`[&::-webkit-scrollbar-thumb]:bg-foreground/25 bg-sidebar/40 text-sidebar-foreground sticky top-[56px] overflow-y-auto md:h-[calc(100vh-60px)] lg:w-56 lg:pb-5 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full dark:[&::-webkit-scrollbar-thumb]:bg-slate-700 [&::-webkit-scrollbar-track]:bg-transparent`}
     >
       <button
         className="bg-secondary sticky top-0 z-10 flex w-full items-center justify-between px-6 py-3 md:hidden"
@@ -32,10 +32,12 @@ const Sidebar = () => {
         {libraries.map((library) => {
           const href = `/docs/${library.slug}`;
           const isActive = pathName === href;
+
           return (
             <Link
               key={library.slug}
               href={href}
+              onClick={() => setMenuOpen(false)}
               className={`my-1.5 block py-2 pr-6 pl-6 font-light ${
                 isActive && "text-primary font-semibold"
               }`}
