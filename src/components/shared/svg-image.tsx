@@ -1,28 +1,65 @@
-import { use } from "react";
+"use client";
 
-// A simple global cache map to prevent downloading the same logo multiple times
-const svgCache = new Map<string, Promise<string>>();
+import { cn } from "@/lib/utils";
+import { useEffect, useState } from "react";
 
-function fetchRawSvg(url: string): Promise<string> {
-  if (!svgCache.has(url)) {
-    const promise = fetch(url)
+// Cache to prevent re-fetching the exact same logo within the session
+const svgCache = new Map<string, string>();
+
+export function SVGImage({
+  src,
+  alt,
+  className,
+}: {
+  src: string;
+  alt: string;
+  className?: string;
+  width?: number;
+  height?: number;
+}) {
+  const [rawSvg, setRawSvg] = useState<string | null>(
+    () => svgCache.get(src) || null,
+  );
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+
+    if (rawSvg) return; // Already cached locally
+
+    let isCurrent = true;
+
+    fetch(src)
       .then((res) => (res.ok ? res.text() : ""))
-      .catch(() => "");
-    svgCache.set(url, promise);
+      .then((text) => {
+        if (isCurrent && text) {
+          svgCache.set(src, text);
+          setRawSvg(text);
+        }
+      })
+      .catch((err) => console.error("Failed to load SVG logo:", err));
+
+    return () => {
+      isCurrent = false;
+    };
+  }, [src, rawSvg]);
+
+  // Server rendering & initial hydration state (perfect match)
+  if (!isMounted || !rawSvg) {
+    return (
+      <span
+        className="bg-muted block h-5 w-5 animate-pulse rounded-full"
+        aria-label={`Loading ${alt}`}
+      />
+    );
   }
-  return svgCache.get(url)!;
-}
-
-export function SVGImage({ src, alt }: { src: string; alt: string }) {
-  // Automatically pauses rendering until the SVG text is ready
-  const rawSvg = use(fetchRawSvg(src));
-
-  if (!rawSvg)
-    return <span className="text-muted-foreground text-xs">Fallback</span>;
 
   return (
     <span
-      className="text-foreground block h-5 w-5 [&>svg]:h-full [&>svg]:w-full"
+      className={cn(
+        `text-foreground block h-5 w-5 [&>svg]:h-full [&>svg]:w-full`,
+        className,
+      )}
       aria-label={alt}
       dangerouslySetInnerHTML={{ __html: rawSvg }}
     />

@@ -3,12 +3,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { usePathname } from "next/navigation";
 import { Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 import { Button } from "@/components/ui/button";
+import { SVGImage } from "@/components/shared/svg-image";
 
 interface NavLink {
   label: string;
@@ -99,43 +100,22 @@ export default function Navbar() {
           </nav>
 
           {/* ── Right side actions ── */}
-          <div className="flex flex-shrink-0 items-center gap-2">
-            {/* Submit a library */}
-            <Button
-              asChild
-              variant="outline"
-              size="sm"
-              className="hidden h-8 gap-1.5 text-xs sm:flex"
-            >
-              <Link href="/submit">
-                <Plus className="h-3.5 w-3.5" />
-                Submit
-              </Link>
-            </Button>
-
+          <div className="flex flex-shrink-0 items-center gap-3">
             {/* GitHub */}
-            <Button
-              asChild
-              variant="ghost"
-              size="sm"
-              className="h-8 w-8 px-0"
-              aria-label="View source on GitHub"
+            <a
+              href="https://github.com/misbahulhoq/llms-full"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-background text-foreground"
             >
-              <a
-                href="https://github.com/misbahulhoq/llms-full"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-background text-foreground"
-              >
-                <Image
-                  src="/icons/github.svg"
+              <Suspense fallback={<span className="sr-only">GitHub</span>}>
+                <SVGImage
                   alt="GitHub"
-                  height={20}
-                  width={20}
-                  className="h-5 w-5"
+                  className="h-7 w-7"
+                  src="/icons/github.svg"
                 />
-              </a>
-            </Button>
+              </Suspense>
+            </a>
 
             {/* Theme toggle */}
             <ThemeToggle />
@@ -148,23 +128,23 @@ export default function Navbar() {
               aria-expanded={mobileOpen}
             >
               <span className="sr-only">Menu</span>
-              <div className="flex flex-col gap-1">
+              <div className="flex flex-col gap-1.5">
                 <span
                   className={cn(
-                    "block h-0.5 w-4 origin-center bg-current transition-transform",
-                    mobileOpen && "translate-y-1.5 rotate-45",
+                    "block h-0.5 w-5 origin-center bg-current transition-transform",
+                    mobileOpen && "translate-y-2 rotate-45",
                   )}
                 />
                 <span
                   className={cn(
-                    "block h-0.5 w-4 bg-current transition-opacity",
+                    "block h-0.5 w-5 bg-current transition-opacity",
                     mobileOpen && "opacity-0",
                   )}
                 />
                 <span
                   className={cn(
-                    "block h-0.5 w-4 origin-center bg-current transition-transform",
-                    mobileOpen && "-translate-y-1.5 -rotate-45",
+                    "block h-0.5 w-5 origin-center bg-current transition-transform",
+                    mobileOpen && "-translate-y-2 -rotate-45",
                   )}
                 />
               </div>
