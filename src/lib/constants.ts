@@ -8,6 +8,8 @@ import {
   Component,
 } from "lucide-react";
 
+export const baseUrl = "";
+
 export interface Library {
   name: string;
   desc: string;
