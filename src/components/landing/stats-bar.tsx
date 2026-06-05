@@ -9,6 +9,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Check, ChevronDown } from "lucide-react";
 import { LLMId, LLMS } from "@/lib/constants";
+import Image from "next/image";
 
 // Stats data
 const stats = [
@@ -53,10 +54,6 @@ const StatsBar = (props: Props) => {
             variant="outline"
             className="border-foreground/30 gap-2 bg-gray-50 dark:bg-gray-900"
           >
-            <span
-              className="h-2 w-2 rounded-full"
-              style={{ background: currentLLM.dot }}
-            />
             <span>Ask with {currentLLM.name}</span>
             <ChevronDown className="h-3.5 w-3.5" />
           </Button>
@@ -69,9 +66,11 @@ const StatsBar = (props: Props) => {
               className="flex cursor-pointer items-center justify-between gap-2"
             >
               <div className="flex items-center gap-2">
-                <span
-                  className="h-2 w-2 rounded-full"
-                  style={{ background: llm.dot }}
+                <Image
+                  src={llm.logoUrl}
+                  alt={llm.name}
+                  width={20}
+                  height={20}
                 />
                 <span>{llm.name}</span>
               </div>

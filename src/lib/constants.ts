@@ -30,11 +30,32 @@ export interface RecentItem {
   ltr: string;
 }
 
-export const LLMS = [
-  { id: "claude", name: "Claude", dot: "#185FA5", icon: "✨" },
-  { id: "chatgpt", name: "ChatGPT", dot: "#639922", icon: "🤖" },
-  { id: "gemini", name: "Gemini", dot: "#D85A30", icon: "🌟" },
-  { id: "perplexity", name: "Perplexity", dot: "#5DCAA5", icon: "🔍" },
+export interface LLM {
+  id: string;
+  name: string;
+  url: string;
+  logoUrl: string;
+}
+
+export const LLMS: LLM[] = [
+  {
+    id: "claude",
+    name: "Claude",
+    url: "https://claude.ai/",
+    logoUrl: "/icons/llm/claude.svg",
+  },
+  {
+    id: "chatgpt",
+    name: "ChatGPT",
+    url: "https://chatgpt.com/",
+    logoUrl: "/icons/llm/chatgpt.svg",
+  },
+  {
+    id: "perplexity",
+    name: "Perplexity",
+    url: "https://perplexity.ai/",
+    logoUrl: "/icons/llm/chatgpt.svg",
+  },
 ] as const;
 
 export type LLMId = (typeof LLMS)[number]["id"];
