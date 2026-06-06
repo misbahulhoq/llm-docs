@@ -30,7 +30,13 @@ const Sidebar = () => {
 
       <div className={`${menuOpen ? "block" : "hidden"} mt-4 md:block lg:mt-0`}>
         {libraries.map((library) => {
-          const href = `/docs/${library.slug}`;
+          const latestVersion = library.versions
+            ? library.versions[library.versions.length - 1]
+            : null;
+
+          const href = `/docs/${library.slug}${
+            latestVersion ? `/${latestVersion}` : ""
+          }`;
           const isActive = pathName === href;
 
           return (

@@ -6,7 +6,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     <main className="flex flex-col gap-5 md:flex-row">
       <Sidebar />
 
-      <div className="flex-1">{children}</div>
+      <div className="flex-1 px-5 py-6">{children}</div>
     </main>
   );
 };

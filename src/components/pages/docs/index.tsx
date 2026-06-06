@@ -1,15 +1,20 @@
 import { getLibraryContent } from "@/app/actions";
 import LibraryPageClient from "./docs-page-client";
 
-const LibraryPage = async ({ libraryName }: { libraryName: string }) => {
-  // NOTE: Hardcoding version and percentage for now
+const DocsPage = async ({
+  libraryName,
+  version,
+}: {
+  libraryName: string;
+  version: string;
+}) => {
   const activeLibraryMdContent = await getLibraryContent(
     libraryName,
-    "16.2.6",
+    version,
     0.2,
   );
 
   return <LibraryPageClient markdownContent={activeLibraryMdContent} />;
 };
 
-export default LibraryPage;
+export default DocsPage;
