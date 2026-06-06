@@ -2,19 +2,25 @@ import { getLibraryContent } from "@/app/actions";
 import LibraryPageClient from "./docs-page-client";
 
 const DocsPage = async ({
-  libraryName,
+  librarySlug,
   version,
 }: {
-  libraryName: string;
+  librarySlug: string;
   version: string;
 }) => {
   const activeLibraryMdContent = await getLibraryContent(
-    libraryName,
+    librarySlug,
     version,
     0.2,
   );
 
-  return <LibraryPageClient markdownContent={activeLibraryMdContent} />;
+  return (
+    <LibraryPageClient
+      markdownContent={activeLibraryMdContent}
+      librarySlug={librarySlug}
+      version={version}
+    />
+  );
 };
 
 export default DocsPage;

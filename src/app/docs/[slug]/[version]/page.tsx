@@ -25,7 +25,7 @@ const Page = async ({
   const { slug, version } = await params;
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <DocsPage libraryName={slug} version={version} />
+      <DocsPage librarySlug={slug} version={version} />
     </Suspense>
   );
 };

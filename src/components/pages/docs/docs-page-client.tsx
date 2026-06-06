@@ -1,8 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { ChevronDown, Copy } from "lucide-react";
-import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
@@ -15,9 +16,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import MarkDownRenderer from "@/components/shared/markdown-renderer";
+import { libraries } from "@/lib/libraries";
 
 interface LibraryPageClientProps {
   markdownContent: string;
+  librarySlug: string;
+  version: string;
 }
 
 const llms = [
@@ -35,8 +39,14 @@ const llms = [
   },
 ];
 
-const LibraryPageClient = ({ markdownContent }: LibraryPageClientProps) => {
+const LibraryPageClient = ({
+  markdownContent,
+  librarySlug,
+  version,
+}: LibraryPageClientProps) => {
+  const router = useRouter();
   const [isCopied, setIsCopied] = useState(false);
+  const activeLibrary = libraries.find((lib) => lib.slug === librarySlug);
 
   const handleCopy = () => {
     if (isCopied) return;
@@ -47,15 +57,43 @@ const LibraryPageClient = ({ markdownContent }: LibraryPageClientProps) => {
     }, 3000);
   };
 
+  const handleVersionChange = (targetVersion: string) => {
+    // Navigates purely on the client side to the newly selected version page
+    router.push(`/docs/${librarySlug}/${targetVersion}`);
+  };
+
   return (
     <div className="">
       {/* Header part */}
-      <section className="mb-5 flex items-center justify-between">
-        <h2>Library name and Version Goes Here</h2>
-        <div className="flex items-center gap-3 select-none">
-          <Button variant="outline" className="">
-            Version
-          </Button>
+      <section className="mb-5 flex flex-wrap items-center justify-between gap-4">
+        <h2 className="text-lg font-semibold">
+          {activeLibrary?.name} <span className="ml-1">v{version}</span>
+        </h2>
+
+        <div className="flex flex-wrap items-center gap-3 select-none">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">
+                Version ({version}) <ChevronDown />
+              </Button>
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent align="start">
+              <DropdownMenuGroup className="space-y-1">
+                {activeLibrary?.versions?.map((version) => {
+                  return (
+                    <DropdownMenuItem
+                      key={version}
+                      className="my-2 cursor-pointer flex-col items-start gap-1 py-2"
+                      onClick={() => handleVersionChange(version)}
+                    >
+                      <span className="flex items-center gap-2">{version}</span>
+                    </DropdownMenuItem>
+                  );
+                })}
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
 
           <ButtonGroup className="select-none">
             <Button
@@ -79,6 +117,7 @@ const LibraryPageClient = ({ markdownContent }: LibraryPageClientProps) => {
                   <ChevronDown />
                 </Button>
               </DropdownMenuTrigger>
+
               <DropdownMenuContent align="end">
                 <DropdownMenuGroup className="space-y-1">
                   <DropdownMenuItem className="cursor-pointer py-2">
@@ -113,7 +152,7 @@ const LibraryPageClient = ({ markdownContent }: LibraryPageClientProps) => {
       </section>
 
       <Tabs defaultValue="raw" className="">
-        <TabsList>
+        <TabsList className="z-5">
           <TabsTrigger value="raw" className="select-none">
             Raw
           </TabsTrigger>
