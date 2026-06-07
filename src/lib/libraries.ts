@@ -2,6 +2,7 @@ interface LibraryInfo {
   name: string;
   slug: string;
   category: string;
+  docs?: string[];
   versions: string[] | null;
   badge?: string;
 }
@@ -11,6 +12,7 @@ export const libraries: LibraryInfo[] = [
   {
     name: "Next.js",
     slug: "nextjs",
+    docs: ["index", "full"],
     category: "meta",
     badge: "popular",
     versions: ["16.2.6", "16.2.7"],

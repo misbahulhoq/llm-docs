@@ -5,6 +5,13 @@ import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { ChevronRight } from "lucide-react";
 
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+
 import { libraries } from "@/lib/libraries";
 
 const Sidebar = () => {
@@ -33,18 +40,56 @@ const Sidebar = () => {
           const latestVersion = library.versions
             ? library.versions[library.versions.length - 1]
             : null;
+          const isAccordion = library.docs && library.docs.length > 1;
 
           const href = `/docs/${library.slug}${
             latestVersion ? `/${latestVersion}` : ""
           }`;
           const isActive = pathName === href;
 
+          if (isAccordion) {
+            return (
+              <Accordion key={library.slug} type="single" collapsible>
+                <AccordionItem value={library.slug}>
+                  <AccordionTrigger
+                    iconAlignment="horizontal"
+                    className="pr-6 text-base"
+                    // asChild
+                  >
+                    <Link
+                      className="block w-full pr-6 pl-6"
+                      href={`/docs/${library.slug}`}
+                    >
+                      {library.name}
+                    </Link>
+                  </AccordionTrigger>
+
+                  <AccordionContent>
+                    {library.docs?.map((doc) => {
+                      return (
+                        <Link
+                          key={doc}
+                          href={`/docs/${library.slug}/${doc}`}
+                          className={`block py-2 pl-7 capitalize ${
+                            isActive && "text-primary font-semibold"
+                          }`}
+                        >
+                          {doc}
+                        </Link>
+                      );
+                    })}
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+            );
+          }
+
           return (
             <Link
               key={library.slug}
               href={href}
               onClick={() => setMenuOpen(false)}
-              className={`my-1.5 block py-2 pr-6 pl-6 font-light ${
+              className={`my-2 block py-3 pr-6 pl-6 font-light md:my-1.5 md:py-2 ${
                 isActive && "text-primary font-semibold"
               }`}
             >
