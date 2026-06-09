@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
+import { librariesCount } from "@/lib/libraries";
 
 const HeroSection = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -9,13 +10,13 @@ const HeroSection = () => {
     <section className="mb-8 text-center">
       <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-gray-200 bg-gray-50 px-3 py-1 text-xs text-gray-600 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-400">
         <span className="h-1.5 w-1.5 rounded-full bg-emerald-600" />
-        <span>142 libraries · always up to date</span>
+        <span>{librariesCount} libraries · always up to date</span>
       </div>
       <h1 className="mb-3 text-4xl font-medium tracking-tight text-gray-900 sm:text-5xl dark:text-white">
-        Ask any AI about any
+        Ask LLMs about popular
         <br />
         <span className="text-blue-700 dark:text-blue-400">
-          JavaScript library
+          JavaScript libraries
         </span>
       </h1>
       <p className="mx-auto mb-6 max-w-lg text-sm text-gray-600 dark:text-gray-400">

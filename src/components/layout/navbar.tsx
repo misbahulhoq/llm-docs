@@ -103,7 +103,7 @@ export default function Navbar() {
           <div className="flex flex-shrink-0 items-center gap-3">
             {/* GitHub */}
             <a
-              href="https://github.com/misbahulhoq/llms-full"
+              href="https://github.com/misbahulhoq/llm-docs"
               target="_blank"
               rel="noopener noreferrer"
               className="bg-background text-foreground"

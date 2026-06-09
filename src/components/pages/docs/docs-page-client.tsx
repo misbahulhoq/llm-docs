@@ -88,7 +88,7 @@ const LibraryPageClient = ({
                   return (
                     <DropdownMenuItem
                       key={version}
-                      className="my-2 cursor-pointer flex-col items-start gap-1 py-2"
+                      className="cursor-pointer flex-col items-start gap-1 py-2"
                       onClick={() => handleVersionChange(version)}
                     >
                       <span className="flex items-center gap-2">{version}</span>

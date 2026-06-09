@@ -231,4 +231,4 @@ export const libraries: LibraryInfo[] = [
   },
 ];
 
-export const librariesCount = libraries.filter((lib) => !lib.versions).length;
+export const librariesCount = libraries.filter((lib) => lib.versions).length;
