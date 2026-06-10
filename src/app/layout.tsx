@@ -39,7 +39,7 @@ export default function RootLayout({
         >
           <Suspense>
             <Navbar />
-            {children}
+            <main className="min-h-screen">{children}</main>
             <Footer />
           </Suspense>
         </ThemeProvider>

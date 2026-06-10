@@ -43,7 +43,7 @@ export const libraries: LibraryInfo[] = [
   {
     name: "Svelte",
     slug: "svelte",
-    iconName: "nuxt.svg",
+    iconName: "svelte.png",
     docs: ["index", "small", "medium", "full"],
     category: "meta",
     badge: "popular",

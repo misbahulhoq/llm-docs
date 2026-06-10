@@ -36,8 +36,7 @@ const ThemeToggle = dynamic(
 const NAV_LINKS: NavLink[] = [
   { label: "Docs", href: "/docs" },
   { label: "Libraries", href: "/libraries" },
-  { label: "Categories", href: "/categories" },
-  { label: "Changelog", href: "/changelog" },
+  { label: "Guide", href: "/guide" },
   { label: "About", href: "/about" },
 ];
 
@@ -82,7 +81,7 @@ export default function Navbar() {
             aria-label="Main navigation"
           >
             {NAV_LINKS.map((link) => {
-              const isActive = pathname === link.href;
+              const isActive = pathname.includes(link.href);
               return (
                 <Link
                   key={link.href}
