@@ -113,7 +113,7 @@ export default function Navbar() {
                 <SVGImage
                   alt="GitHub"
                   className="h-6 w-6"
-                  src="/icons/github.svg"
+                  src={`${BASE_PATH}/icons/github.svg`}
                 />
               </Suspense>
             </a>

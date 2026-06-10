@@ -1,13 +1,13 @@
 import type { NextConfig } from "next";
 
-const isProd = process.env.NODE_ENV === "production";
-const repoName = "/llm-docs";
+// const isProd = process.env.NODE_ENV === "production";
+// const repoName = "/llm-docs";
 
 const nextConfig: NextConfig = {
   /* config options here */
   reactCompiler: true,
   output: "export",
-  basePath: isProd ? repoName : "",
+  // basePath: isProd ? repoName : "",
   images: {
     unoptimized: true,
   },
