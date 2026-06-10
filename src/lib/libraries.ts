@@ -14,6 +14,7 @@ export interface LibraryInfo {
   name: string;
   slug: string;
   category: string;
+  iconUrl: string;
   docs?: string[];
   versions: string[] | null;
   badge?: string;

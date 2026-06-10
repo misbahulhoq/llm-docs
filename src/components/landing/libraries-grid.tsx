@@ -1,9 +1,11 @@
 import { MessageCircle } from "lucide-react";
-import { LLMId, LLMS } from "@/lib/constants";
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { LLMId, LLMS } from "@/lib/constants";
 import { buildLLMUrl } from "@/lib/helpers";
 import { LibraryInfo } from "@/lib/libraries";
+import Image from "next/image";
 
 type Props = {
   filteredLibraries: LibraryInfo[];
@@ -49,7 +51,9 @@ const LibrariesGrid = (props: Props) => {
                 className="group hover:border-foreground/30 border border-gray-100 transition-all"
               >
                 <CardContent className="space-y-3 p-4">
-                  <div className="flex items-center justify-between"></div>
+                  <div className="flex items-center">
+                    {/* <Image src={lib.} /> */}
+                  </div>
                   <div>
                     <h3 className="text-sm font-medium">{lib.name}</h3>
                   </div>

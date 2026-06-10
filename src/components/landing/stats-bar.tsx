@@ -1,20 +1,21 @@
+import { useState } from "react";
+import { Check, ChevronDown } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useState } from "react";
-
-import { Button } from "@/components/ui/button";
-import { Check, ChevronDown } from "lucide-react";
 import { LLMId, LLMS } from "@/lib/constants";
-import { SVGImage } from "../shared/svg-image";
+import { SVGImage } from "@/components/shared/svg-image";
+import { librariesCount, LIBRARY_CATEGORIES } from "@/lib/libraries";
 
 // Stats data
 const stats = [
-  { label: "Libraries", value: "142" },
-  { label: "Categories", value: "38" },
+  { label: "Libraries", value: librariesCount },
+  { label: "Categories", value: LIBRARY_CATEGORIES.length },
 ];
 
 type Props = {
@@ -56,6 +57,7 @@ const StatsBar = (props: Props) => {
             <ChevronDown className="h-3.5 w-3.5" />
           </Button>
         </DropdownMenuTrigger>
+
         <DropdownMenuContent align="end" className="w-44">
           {LLMS.map((llm) => {
             return (
