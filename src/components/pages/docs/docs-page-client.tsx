@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import MarkDownRenderer from "@/components/shared/markdown-renderer";
 import { libraries } from "@/lib/libraries";
+import { BASE_PATH } from "@/lib/utils";
 
 interface LibraryPageClientProps {
   markdownContent: string;
@@ -137,7 +138,7 @@ const LibraryPageClient = ({
                       >
                         <span className="flex items-center gap-2">
                           <Image
-                            src={logoUrl}
+                            src={`${BASE_PATH}/${logoUrl}`}
                             alt={name}
                             height={16}
                             width={16}

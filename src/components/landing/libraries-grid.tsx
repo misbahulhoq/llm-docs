@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { LLMId, LLMS } from "@/lib/constants";
 import { buildLLMUrl } from "@/lib/helpers";
 import { LibraryInfo } from "@/lib/libraries";
+import { BASE_PATH } from "@/lib/utils";
 
 type Props = {
   filteredLibraries: LibraryInfo[];
@@ -53,7 +54,7 @@ const LibrariesGrid = (props: Props) => {
                 <CardContent className="space-y-3 p-4">
                   <div className="flex items-center">
                     <Image
-                      src={`/icons/libraries/${lib.iconName}`}
+                      src={`${BASE_PATH}/icons/libraries/${lib.iconName}`}
                       alt={lib.name + " icon"}
                       height={42}
                       width={42}
